@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 23)
 
 add_executable(clox main.c
         common.h
-        chunks.h
+        chunk.h
         chunk.c
         memory.h
         memory.c
