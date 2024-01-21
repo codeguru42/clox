@@ -28,19 +28,23 @@ Value pop() {
     return *vm.stackTop;
 }
 
+void trace_stack() {
+    printf(" ");
+    for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
+        printf("[ ");
+        printValue(*slot);
+        printf(" ]");
+    }
+    printf("\n");
+}
+
 static InterpretResult run() {
     #define READ_BYTE() (*vm.ip++)
     #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
 
     for(;;) {
 #ifdef DEBUG_TRACE_EXECUTION
-        printf(" ");
-        for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
-            printf("[ ");
-            printValue(*slot);
-            printf(" ]");
-        }
-        printf("\n");
+        trace_stack();
         disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
 #endif
         uint8_t instruction;
