@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 #include "common.h"
-#include "debug.h"
 #include "vm.h"
+#include "debug.h"
 
 VM vm;
 
@@ -28,23 +28,13 @@ Value pop() {
     return *vm.stackTop;
 }
 
-void trace_stack() {
-    printf(" ");
-    for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
-        printf("[ ");
-        printValue(*slot);
-        printf(" ]");
-    }
-    printf("\n");
-}
-
 static InterpretResult run() {
     #define READ_BYTE() (*vm.ip++)
     #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
 
     for(;;) {
 #ifdef DEBUG_TRACE_EXECUTION
-        trace_stack();
+        trace_stack(&vm);
         disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
 #endif
         uint8_t instruction;

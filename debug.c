@@ -43,3 +43,13 @@ int disassembleInstruction(Chunk *chunk, int offset) {
             return offset + 1;
     }
 }
+
+void trace_stack(VM* vm) {
+    printf(" ");
+    for (Value* slot = vm->stack; slot < vm->stackTop; slot++) {
+        printf("[ ");
+        printValue(*slot);
+        printf(" ]");
+    }
+    printf("\n");
+}
