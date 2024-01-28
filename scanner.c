@@ -99,6 +99,24 @@ Token string() {
     return makeToken(TOKEN_STRING);
 }
 
+static bool isDigit(char c) {
+    return c >= '0' && c <= '9';
+}
+
+static Token number() {
+    while (isDigit(peek())) advance();
+
+    // Look for fractional part
+    if (peek() == '.' && isDigit(peekNext())) {
+        // Consume the '.'
+        advance();
+
+        while (isDigit(peek())) advance();
+    }
+
+    return makeToken(TOKEN_NUMBER);
+}
+
 Token scanToken() {
     skipWhitespace();
     scanner.start = scanner.current;
@@ -106,6 +124,8 @@ Token scanToken() {
     if (isAtEnd()) return makeToken(TOKEN_EOF);
 
     char c = advance();
+
+    if (isDigit(c)) return number();
 
     switch (c) {
         case '(': return makeToken(TOKEN_LEFT_PAREN);
