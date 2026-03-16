@@ -104,6 +104,20 @@ static void number() {
     emitConstant(value);
 }
 
+static void unary() {
+    TokenType operatorType = parser.previous.type;
+
+    parsePrecedence(PREC_UNARY);
+
+    switch (operatorType) {
+        case TOKEN_MINUS:
+            emitByte(OP_NEGATE);
+            break;
+        default:
+            return;
+    }
+}
+
 static  void expression() {
 
 }
