@@ -210,6 +210,10 @@ static void parsePrecedence(Precedence precedence) {
 
 }
 
+static ParseRule* getRule(TokenType type) {
+    return &rules[type];
+}
+
 static  void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
 }
